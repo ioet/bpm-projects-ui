@@ -5,7 +5,10 @@ import NewProject from "./components/newProject";
 import "./App.css";
 import Paper from "@material-ui/core/Paper/Paper";
 import axios from "axios";
+<<<<<<< Updated upstream
 import { isObject } from "util";
+=======
+>>>>>>> Stashed changes
 
 class App extends Component {
   constructor() {
@@ -16,6 +19,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+<<<<<<< Updated upstream
     /*     axios.defaults.baseURL = "https://randomuser.me/api"; // GHANGE FOR REAL API
 
     axios
@@ -47,6 +51,17 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       });
+=======
+    axios.defaults.baseURL = process.env.BPM_PEOPLE_API_URL;
+    axios.defaults.headers.common["Content-Type"] = "application/json";
+    axios.defaults.headers.common["Token"] =
+      process.env.BPM_PEOPLE_ACCESS_TOKEN;
+
+    axios
+      .get("projects/")
+      .then(res => this.setState({ projectList: res.data }))
+      .catch(err => console.log(err));
+>>>>>>> Stashed changes
   }
 
   handleAddProject = projectName => {
