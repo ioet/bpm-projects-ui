@@ -2,10 +2,12 @@ import React from "react";
 
 const Project = props => {
   const { project } = props;
+  console.log(project);
   return (
-    <div>
-      <h1>Project {project.id.name}</h1>
-      <h3>Name: {project.name.first + " " + project.name.last}</h3>
+    <div key={project.uid}>
+      <h1>Project</h1>
+      <h3>Name: {project.short_name}</h3>
+      <h3>Comment: {project.comments}</h3>
     </div>
   );
 };
