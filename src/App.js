@@ -33,6 +33,8 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       });
+
+    //axios.defaults.baseURL = ""
   }
 
   handleAddProject = projectName => {
