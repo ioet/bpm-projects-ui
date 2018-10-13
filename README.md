@@ -11,8 +11,8 @@ npm install
 ## Configure environment variables
 
 ```
-export REACT_APP_BPM_PEOPLE_API_URL=http://13b47657.ngrok.io/
-export BPM_PEOPLE_ACCESS_TOKEN=***your token from http://13b47657.ngrok.io/login/***
+export REACT_APP_BPM_PEOPLE_API_URL=https://bpm-projects-api.azurewebsites.net/
+export REACT_APP_BPM_PEOPLE_ACCESS_TOKEN=***your token from https://bpm-projects-api.azurewebsites.net/***
 ```
 
 ## Running the app

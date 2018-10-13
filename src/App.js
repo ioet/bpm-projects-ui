@@ -15,10 +15,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.defaults.baseURL = process.env.BPM_PEOPLE_API_URL;
+    axios.defaults.baseURL = process.env.REACT_APP_BPM_PEOPLE_API_URL;
     axios.defaults.headers.common["Content-Type"] = "application/json";
     axios.defaults.headers.common["Token"] =
-      process.env.BPM_PEOPLE_ACCESS_TOKEN; // SEE how to fix this
+      process.env.REACT_APP_BPM_PEOPLE_ACCESS_TOKEN; // SEE how to fix
+
+    console.log(process.env);
 
     axios
       .get("projects/")
