@@ -15,17 +15,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.defaults.baseURL = "https://randomuser.me/api"; // GHANGE FOR REAL API
+    axios.defaults.baseURL = process.env.BPM_PEOPLE_API_URL;
+    axios.defaults.headers.common["Content-Type"] = "application/json";
+    axios.defaults.headers.common["Token"] =
+      process.env.BPM_PEOPLE_ACCESS_TOKEN; // SEE how to fix this
 
     axios
-      .get("/?results=5")
-      .then(response => {
-        console.log(response.data.results);
-        this.setState({ projectList: response.data.results });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      .get("projects/")
+      .then(res => this.setState({ projectList: res.data }))
+      .catch(err => console.log(err));
   }
 
   handleAddProject = projectName => {
