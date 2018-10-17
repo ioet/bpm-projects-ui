@@ -1,16 +1,19 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import "./index.css";
 import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import { RootTheme } from "./styles";
-import { createStore, applyMiddleware } from "redux";
-import { func } from "prop-types";
+import store from "./store";
+import { getAllProjects } from "./actions"
+import "./index.css";
+import "typeface-roboto";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+store.dispatch(getAllProjects());
 
-serviceWorker.unregister();
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+
+//ReactDOM.render(<App projects={store.getState()} />, document.getElementById("root"));

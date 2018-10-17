@@ -1,33 +1,14 @@
 import React, { Component } from "react";
-import Projects from "./components/projects";
-import Project from "./components/project";
+import ProjectListContainer from "./components/container/projectsListContainer";
 import NewProject from "./components/newProject";
+import Typography from '@material-ui/core/Typography/Typography';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import "./App.css";
 import Paper from "@material-ui/core/Paper/Paper";
-import axios from "axios";
+
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      projectList: []
-    };
-  }
-
-  componentDidMount() {
-    axios.defaults.baseURL = process.env.REACT_APP_BPM_PEOPLE_API_URL;
-    axios.defaults.headers.common["Content-Type"] = "application/json";
-    axios.defaults.headers.common["Token"] =
-      process.env.REACT_APP_BPM_PEOPLE_ACCESS_TOKEN; // SEE how to fix
-
-    console.log(process.env);
-
-    axios
-      .get("projects/")
-      .then(res => this.setState({ projectList: res.data }))
-      .catch(err => console.log(err));
-  }
-
   handleAddProject = projectName => {
     const projectList = [...this.state.projectList];
     const nextIndex = this.state.projectList.length;
@@ -47,10 +28,19 @@ class App extends Component {
 
   render() {
     return (
-      <Paper className="App" elevation={10}>
-        <NewProject onAddProject={this.handleAddProject} />
-        <Projects projectList={this.state.projectList} />
-      </Paper>
+        <div>
+            <AppBar position="sticky">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" >
+                        BPM PROJECTS
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Paper className="App" elevation={1}>
+                <NewProject onAddProject={this.handleAddProject} />
+                <ProjectListContainer />
+            </Paper>
+        </div>
     );
   }
 }
