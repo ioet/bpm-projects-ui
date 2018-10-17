@@ -1,11 +1,16 @@
 import React, { Component } from "react";
+import TextField from '@material-ui/core/TextField/TextField';
 import Button from "@material-ui/core/Button";
 
 class NewProject extends Component {
   render() {
     return (
       <div>
-        <input type="text" placeholder="Name" id="name" />
+          <TextField
+              name="authentication_identity"
+              label="Project Name"
+              id="mui-theme-provider-input"
+          />
         <Button
           variant="contained"
           color="primary"

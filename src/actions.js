@@ -16,7 +16,15 @@ export const getAllProjects = () => (
     dispatch =>
     axios
         .get(ProjectsAPI.PATH)
-        .then(response => {dispatch(addProjects(response.data));
-            console.log(response.data)})
+        .then(response => dispatch(addProjects(response.data)))
         .catch(err => console.log(err))
 );
+
+export const hoverOver = id => ({
+    type: "HOVER_OVER",
+    id,
+});
+
+export const hoverOut = () => ({
+    type: "HOVER_OUT",
+});

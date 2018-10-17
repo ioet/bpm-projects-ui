@@ -20,9 +20,26 @@ const anotherReducer = (state = [], action) =>{
     }
 };
 
+const hover = (state = { hover: false }, action) => {
+    switch (action.type) {
+        case "HOVER_OVER":
+            return {
+                hover: true,
+                id: action.id,
+            };
+        case "HOVER_OUT":
+            return {
+                hover: false,
+            };
+        default:
+            return state;
+    }
+};
+
 const rootReducer = combineReducers({
     projectList,
-    anotherReducer
+    anotherReducer,
+    hover
 });
 
 export default rootReducer;
