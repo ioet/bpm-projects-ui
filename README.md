@@ -11,7 +11,7 @@ npm install
 ## Configure environment variables
 
 ```
-export REACT_APP_BPM_PROJECTS_API_URL=https://bpm-projects-api.azurewebsites.net/
+export REACT_APP_BPM_PROJECTS_API_URL=https://bpm-projects-api.azurewebsites.net
 ```
 
 ## Get Token
