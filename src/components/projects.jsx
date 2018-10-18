@@ -47,10 +47,18 @@ const Projects = ({ projectList, classes }) => {
                 <TableCell className={classes.tableHead}>
                   {ProjectListHeaders.COL_4}
                 </TableCell>
-                <TableCell className={classes.tableHead}>
+                <TableCell
+                  className={[classes.tableHead, classes.tableHeadIcon].join(
+                    " "
+                  )}
+                >
                   {ProjectListHeaders.COL_5}
                 </TableCell>
-                <TableCell className={classes.tableHead}>
+                <TableCell
+                  className={[classes.tableHead, classes.tableHeadIcon].join(
+                    " "
+                  )}
+                >
                   {ProjectListHeaders.COL_6}
                 </TableCell>
               </TableRow>

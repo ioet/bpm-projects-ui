@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { UserActions } from "./action-types";
+import { UserActions, HoverActions } from "./action-types";
 
 const projectList = (state = [], action) => {
   const clone = [...state];
@@ -14,13 +14,47 @@ const projectList = (state = [], action) => {
         }
       }
       return [...clone];
+    case UserActions.UPDATE:
+      console.log(action);
+      for (let i = 0; i < clone.length; i++) {
+        if (clone[i].uid === action.project.uid) {
+          clone[i] = action.project;
+          break;
+        }
+      }
+      return [...clone];
     default:
       return state;
   }
 };
 
-const anotherReducer = (state = [], action) => {
+const projectEdit = (state = { create: false, update: false }, action) => {
   switch (action.type) {
+    case UserActions.EDIT_START:
+      return {
+        uid: action.uid,
+        create: false,
+        update: true
+      };
+    case UserActions.EDIT_DATA:
+      console.log(action);
+      return {
+        ...state,
+        [action.field]: action.value
+      };
+    /*case UserActions.TOGGLE_ACTIVE:
+      return {
+        ...state,
+        active: !action.active
+      };*/
+    case UserActions.EDIT_END:
+      return {
+        create: false,
+        update: false,
+        short_name: null,
+        comments: null,
+        active: null
+      };
     default:
       return state;
   }
@@ -28,12 +62,12 @@ const anotherReducer = (state = [], action) => {
 
 const hover = (state = { hover: false }, action) => {
   switch (action.type) {
-    case "HOVER_OVER":
+    case HoverActions.OVER:
       return {
         hover: true,
         id: action.id
       };
-    case "HOVER_OUT":
+    case HoverActions.OUT:
       return {
         hover: false
       };
@@ -44,7 +78,7 @@ const hover = (state = { hover: false }, action) => {
 
 const rootReducer = combineReducers({
   projectList,
-  anotherReducer,
+  projectEdit,
   hover
 });
 

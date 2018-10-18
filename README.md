@@ -1,4 +1,4 @@
-#bpm-people-ui
+# bpm-people-ui
 
 In order to set up and run the project, follow these steps:
 
