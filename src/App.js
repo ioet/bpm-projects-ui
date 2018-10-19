@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import ProjectListContainer from "./components/container/projectsListContainer";
+import ProjectListContainer from "./components/container/ProjectsListContainer";
+import FloatingActionButtonContainer from "./components/container/FloatingActionButtonContainer";
 import NewProject from "./components/newProject";
 import Typography from "@material-ui/core/Typography/Typography";
 import AppBar from "@material-ui/core/AppBar/AppBar";
@@ -39,6 +40,9 @@ class App extends Component {
         <Paper className={this.props.classes.root} elevation={1}>
           {/*<NewProject onAddProject={this.handleAddProject} />*/}
           <ProjectListContainer />
+          <br />
+
+          <FloatingActionButtonContainer />
         </Paper>
       </div>
     );

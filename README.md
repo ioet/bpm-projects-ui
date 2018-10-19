@@ -17,7 +17,7 @@ export REACT_APP_BPM_PROJECTS_API_URL=https://bpm-projects-api.azurewebsites.net
 ## Get Token
 
 ```
-source exportToken.sh
+source export_token.sh
 ```
 
 ## Running the app

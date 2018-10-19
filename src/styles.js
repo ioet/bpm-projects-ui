@@ -23,7 +23,7 @@ export const AppStyles = theme => ({
 
 export const FabStyles = () => ({
   fab: {
-    position: "absolute",
+    position: "fixed",
     bottom: "3%",
     right: "5%"
   }

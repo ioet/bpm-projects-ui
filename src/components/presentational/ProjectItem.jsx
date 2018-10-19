@@ -11,12 +11,13 @@ import { withWidth } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import { Clear, Delete, Done, Edit } from "@material-ui/icons";
-import { ProjectStyles } from "../styles";
+import { ProjectStyles } from "../../styles";
 
-const Project = props => {
+const ProjectItem = props => {
   const {
     onDeleteProject,
     onEditProject,
+    onToggleActive,
     onMouseOver,
     onMouseOut,
     onChange,
@@ -88,7 +89,7 @@ const Project = props => {
           color={"primary"}
           onClick={e => {
             e.preventDefault();
-            onChange(e);
+            onToggleActive(!active);
           }}
         />
       </TableCell>
@@ -97,7 +98,7 @@ const Project = props => {
         numeric
       >
         <Tooltip
-          title={"Edit"}
+          title={editId !== uid ? "Edit" : "Update"}
           placement="top"
           enterDelay={400}
           leaveDelay={200}
@@ -119,7 +120,7 @@ const Project = props => {
         numeric
       >
         <Tooltip
-          title={"Delete"}
+          title={editId !== uid ? "Delete" : "Clear"}
           placement="top"
           enterDelay={400}
           leaveDelay={200}
@@ -128,7 +129,7 @@ const Project = props => {
             color="primary"
             onClick={e => {
               e.preventDefault();
-              onDeleteProject(project);
+              onDeleteProject(project, editId);
             }}
             className={"show"}
           >
@@ -140,14 +141,20 @@ const Project = props => {
   );
 };
 
-Project.propTypes = {
-  project: PropTypes.object.isRequired,
+ProjectItem.propTypes = {
+  project: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    short_name: PropTypes.string.isRequired,
+    active: PropTypes.bool.isRequired,
+    comments: PropTypes.string
+  }).isRequired,
   counter: PropTypes.number.isRequired,
   editId: PropTypes.string.isRequired,
   classes: PropTypes.any.isRequired,
   width: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   onEditProject: PropTypes.func.isRequired,
+  onToggleActive: PropTypes.func.isRequired,
   onMouseOver: PropTypes.func.isRequired,
   onMouseOut: PropTypes.func.isRequired,
   onDeleteProject: PropTypes.func.isRequired
@@ -156,4 +163,4 @@ Project.propTypes = {
 export default compose(
   withStyles(ProjectStyles),
   withWidth()
-)(Project);
+)(ProjectItem);

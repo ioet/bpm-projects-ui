@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
-import ProjectItemContainer from "./container/projectItemContainer";
+import ProjectItemContainer from "../container/ProjectItemContainer";
 import Table from "@material-ui/core/Table/Table";
 import TableHead from "@material-ui/core/TableHead/TableHead";
 import TableRow from "@material-ui/core/TableRow/TableRow";
@@ -10,8 +10,8 @@ import TableBody from "@material-ui/core/TableBody/TableBody";
 import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { withWidth } from "@material-ui/core";
-import { ProjectListStyles } from "../styles";
-import { ProjectListHeaders } from "../constants";
+import { ProjectListStyles } from "../../styles";
+import { ProjectListHeaders } from "../../constants";
 
 const Projects = ({ projectList, classes }) => {
   let counter = 0;
