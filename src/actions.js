@@ -1,12 +1,7 @@
-import axios from "axios";
-import { UserActions } from "./action-types";
-import { ProjectsAPI } from "./constants";
+import {DeleteActions, UserActions, SnackBarMessageActions, HoverActions} from "./action-types";
+import { ProjectsAPI, SnackBarMessageConst } from "./constants";
 import { newProject } from "./components/utils/utils";
-
-axios.defaults.baseURL = process.env.REACT_APP_BPM_PROJECTS_API_URL;
-axios.defaults.headers.common["Content-Type"] = "application/json";
-axios.defaults.headers.common["Token"] =
-  process.env.REACT_APP_BPM_PROJECTS_ACCESS_TOKEN;
+import axios from "./components/utils/axios"
 
 const displayProjects = projects => ({
   type: UserActions.GET_PROJECTS,
@@ -18,9 +13,9 @@ const addProject = project => ({
   project
 });
 
-const removeUser = project => ({
+const removeProject = uid => ({
   type: UserActions.DELETE,
-  project
+  uid
 });
 
 const startEditProject = projectId => ({
@@ -46,10 +41,43 @@ export const setProjectEditData = (field, value) => ({
   value
 });
 
-export const clearEdit = project => (dispatch, getState) => {
+export const showSnackBarMessage = message => ({
+  type: SnackBarMessageActions.MESSAGE,
+  open: true,
+  message
+});
+
+export const hideSnackBarMessage = () => ({
+  type: SnackBarMessageActions.MESSAGE,
+  open: false,
+  message: ""
+});
+
+export const showDeleteDialog = project => ({
+  type: DeleteActions.SHOW_MESSAGE,
+  open: true,
+  project
+});
+
+export const hideDeleteDialog = () => ({
+  type: DeleteActions.HIDE_MESSAGE,
+  open: false
+});
+
+export const hoverOver = id => ({
+    type: HoverActions.OVER,
+    id
+});
+
+export const hoverOut = () => ({
+    type: HoverActions.OUT
+});
+
+export const clearEdit = uid => (dispatch, getState) => {
+  dispatch(showSnackBarMessage(`${SnackBarMessageConst.DISCARDED}`));
   const editId = getState().projectEdit.uid;
   if (editId === newProject().uid) return dispatch(endCreateProject());
-  if (editId === project.uid) return dispatch(endEditProject());
+  if (editId === uid) return dispatch(endEditProject());
 };
 
 const setUpdateProject = project => ({
@@ -72,7 +100,7 @@ export const getAllProjects = () => dispatch =>
   axios
     .get(ProjectsAPI.PATH)
     .then(response => dispatch(displayProjects(response.data)))
-    .catch(err => console.log(err));
+    .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_LOAD_PROJECTS}: ${err}`)));
 
 const createProject = () => (dispatch, getState) => {
   let { short_name, comments, active } = getState().projectEdit;
@@ -85,11 +113,11 @@ const createProject = () => (dispatch, getState) => {
       active
     })
     .then(res => {
-      console.log(res);
       dispatch(endCreateProject());
       dispatch(addProject(res.data));
+      dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_CREATED}`));
     })
-    .catch(err => console.log(err));
+    .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_CREATE_PROJECT}: ${err}`)));
 };
 
 const updateProject = project => (dispatch, getState) => {
@@ -108,23 +136,18 @@ const updateProject = project => (dispatch, getState) => {
     .then(res => {
       dispatch(setUpdateProject(res.data));
       dispatch(endEditProject());
+      dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_UPDATED}: ${short_name}`));
     })
-    .catch(err => console.log(err));
+    .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_UPDATE_PROJECT}: ${err}`)));
 };
 
-export const deleteProject = project => dispatch =>
+export const deleteProject = uid => (dispatch =>
   axios
-    .delete(`${ProjectsAPI.PATH}/${project.uid}`)
+    .delete(`${ProjectsAPI.PATH}/${uid}`)
+    /*.then(() => dispatch(removeProject(uid)))*/ //CHECK THIS PART
+    .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_DELETE_PROJECT}: ${err}`)))
     .then(() => {
-      dispatch(removeUser(project));
+      dispatch(removeProject(uid));
+        dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_DELETED}`));
     })
-    .catch(err => console.log(err));
-
-export const hoverOver = id => ({
-  type: "HOVER_OVER",
-  id
-});
-
-export const hoverOut = () => ({
-  type: "HOVER_OUT"
-});
+);

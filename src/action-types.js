@@ -11,6 +11,15 @@ export const UserActions = {
   DELETE: "DELETE_PROJECT"
 };
 
+export const SnackBarMessageActions = {
+    MESSAGE: "INFO_MESSAGE"
+};
+
+export const DeleteActions = {
+  SHOW_MESSAGE: "SHOW_DIALOG_BOX",
+  HIDE_MESSAGE: "HIDE_DIALOG_BOX",
+};
+
 export const HoverActions = {
   OVER: "HOVER_OVER",
   OUT: "HOVER_OUT"

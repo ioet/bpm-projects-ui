@@ -3,7 +3,7 @@ import ProjectItem from "../presentational/ProjectItem";
 import {
   editProject,
   setProjectEditData,
-  deleteProject,
+  showDeleteDialog,
   clearEdit,
   hoverOver,
   hoverOut
@@ -35,9 +35,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setProjectEditData("active", checked));
   },
   onDeleteProject: (project, editId) => {
-    project.uid === editId
-      ? dispatch(clearEdit(project))
-      : dispatch(deleteProject(project.uid));
+      project.uid === editId
+      ? dispatch(clearEdit(project.uid))
+      : dispatch(showDeleteDialog(project));
   },
   onMouseOver: id => {
     dispatch(hoverOver(id));

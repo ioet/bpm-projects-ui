@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { compose } from "redux";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import TableCell from "@material-ui/core/TableCell/TableCell";
 import TextField from "@material-ui/core/TextField/TextField";
 import Typography from "@material-ui/core/Typography/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
+import { ProjectListConst } from "../../constants";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { withWidth } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import { Clear, Delete, Done, Edit } from "@material-ui/icons";
@@ -98,7 +97,7 @@ const ProjectItem = props => {
         numeric
       >
         <Tooltip
-          title={editId !== uid ? "Edit" : "Update"}
+          title={editId !== uid ? ProjectListConst.TOOLTIP_EDIT : ProjectListConst.TOOLTIP_UPDATE}
           placement="top"
           enterDelay={400}
           leaveDelay={200}
@@ -120,7 +119,7 @@ const ProjectItem = props => {
         numeric
       >
         <Tooltip
-          title={editId !== uid ? "Delete" : "Clear"}
+          title={editId !== uid ? ProjectListConst.TOOLTIP_DELETE : ProjectListConst.TOOLTIP_CLEAR}
           placement="top"
           enterDelay={400}
           leaveDelay={200}
@@ -151,7 +150,6 @@ ProjectItem.propTypes = {
   counter: PropTypes.number.isRequired,
   editId: PropTypes.string.isRequired,
   classes: PropTypes.any.isRequired,
-  width: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   onEditProject: PropTypes.func.isRequired,
   onToggleActive: PropTypes.func.isRequired,
@@ -160,7 +158,4 @@ ProjectItem.propTypes = {
   onDeleteProject: PropTypes.func.isRequired
 };
 
-export default compose(
-  withStyles(ProjectStyles),
-  withWidth()
-)(ProjectItem);
+export default withStyles(ProjectStyles)(ProjectItem);

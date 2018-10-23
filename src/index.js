@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
-import store from "./store";
+import store from "./components/utils/store";
 import { getAllProjects } from "./actions"
 import "./index.css";
 import "typeface-roboto";

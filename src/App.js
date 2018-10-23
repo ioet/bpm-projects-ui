@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import {Title} from "./constants"
 import ProjectListContainer from "./components/container/ProjectsListContainer";
 import FloatingActionButtonContainer from "./components/container/FloatingActionButtonContainer";
-import NewProject from "./components/newProject";
+import DeleteDialogContainer from "./components/container/DeleteDialogContainer";
+import NotificationSnackBarContainer from "./components/container/NotificationSnackBarContainer";
 import Typography from "@material-ui/core/Typography/Typography";
 import AppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
@@ -10,40 +12,23 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { AppStyles } from "./styles";
 
 class App extends Component {
-  handleAddProject = projectName => {
-    /*const projectList = [...this.state.projectList];
-    const nextIndex = this.state.projectList.length;
-    let newProject = {
-      id: {
-        name: projectName,
-        value: { nextIndex }
-      },
-      name: {
-        first: "firstName",
-        last: "lastName"
-      }
-    };
-    projectList.push(newProject);
-    this.setState({ projectList });*/
-  };
-
   render() {
     return (
       <div>
         <AppBar position="sticky">
           <Toolbar>
             <Typography variant="h6" color="inherit">
-              BPM PROJECTS
+                {Title.VALUE}
             </Typography>
           </Toolbar>
         </AppBar>
         <Paper className={this.props.classes.root} elevation={1}>
-          {/*<NewProject onAddProject={this.handleAddProject} />*/}
           <ProjectListContainer />
           <br />
-
           <FloatingActionButtonContainer />
         </Paper>
+          <DeleteDialogContainer />
+          <NotificationSnackBarContainer />
       </div>
     );
   }

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { compose } from "redux";
 import ProjectItemContainer from "../container/ProjectItemContainer";
 import Table from "@material-ui/core/Table/Table";
 import TableHead from "@material-ui/core/TableHead/TableHead";
@@ -9,13 +8,12 @@ import TableCell from "@material-ui/core/TableCell/TableCell";
 import TableBody from "@material-ui/core/TableBody/TableBody";
 import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { withWidth } from "@material-ui/core";
 import { ProjectListStyles } from "../../styles";
 import { ProjectListHeaders } from "../../constants";
 
 const Projects = ({ projectList, classes }) => {
   let counter = 0;
-  const projects = projectList.map(project => {
+  const projects = Object.values(projectList).map(project => {
     counter++;
     return (
       <ProjectItemContainer
@@ -27,10 +25,10 @@ const Projects = ({ projectList, classes }) => {
   });
   return (
     <div className={classes.root}>
-      {projects.length !== 0 ? (
+      {counter !== 0 ? (
         <div>
           <Typography variant="caption" gutterBottom align="left">
-            {`Results: ${projects.length} projects found.`}
+            {`Results: ${counter} projects found.`}
           </Typography>
           <Table>
             <TableHead>
@@ -77,11 +75,7 @@ const Projects = ({ projectList, classes }) => {
 
 Projects.propTypes = {
   classes: PropTypes.object.isRequired,
-  width: PropTypes.string.isRequired,
-  projectList: PropTypes.array.isRequired
+  projectList: PropTypes.object.isRequired
 };
 
-export default compose(
-  withStyles(ProjectListStyles),
-  withWidth()
-)(Projects);
+export default withStyles(ProjectListStyles)(Projects);

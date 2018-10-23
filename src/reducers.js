@@ -1,6 +1,18 @@
 import { combineReducers } from "redux";
-import { UserActions, HoverActions } from "./action-types";
+import { UserActions, HoverActions, DeleteActions, SnackBarMessageActions } from "./action-types";
 import { newProject } from "./components/utils/utils";
+
+const message = (state = { open: false }, action) => {
+    switch (action.type) {
+        case SnackBarMessageActions.MESSAGE:
+            return ({
+                open: action.open,
+                message: action.message,
+            });
+        default:
+            return state;
+    }
+};
 
 const project = (state, action) => {
   switch (action.type) {
@@ -11,39 +23,29 @@ const project = (state, action) => {
   }
 };
 
-const projectList = (state = [], action) => {
-  const clone = [...state];
+const projectList = (state = {}, action) => {
+  const clone = {...state};
   switch (action.type) {
     case UserActions.GET_PROJECTS:
-      /*const projectList = {};
-      action.projectList.forEach(element => {
-        projectList[element.uid] = element;
-      });*/
-      return [...state, ...action.projectList];
+      const projectList = {};
+      action.projectList.forEach(element => projectList[element.uid] = element);
+      return {...projectList};
     case UserActions.UPDATE:
-      for (let i = 0; i < clone.length; i++) {
-        if (clone[i].uid === action.project.uid) {
-          clone[i] = action.project;
-          break;
-        }
-      }
-      return [...clone];
+      clone[action.project.uid] = action.project;
+      return {...clone};
     case UserActions.CREATE_START:
-      return [project(undefined, action), ...state];
+      const newState = project(undefined, action);
+      clone[newState.uid] = newState;
+      return {...clone};
     case UserActions.CREATE_END:
-      clone.shift();
-      return [...clone];
+        delete clone["tbs"];
+      return {...clone};
     case UserActions.ADD_PROJECT:
-      return [...action.project, ...clone];
+      clone[action.project.uid] = action.project;
+      return {...clone};
     case UserActions.DELETE:
-      console.log("delete", action.project);
-      for (let i = 0; i < clone.length; i++) {
-        if (clone[i].uid === action.project.uid) {
-          clone.splice(i, 1);
-          break;
-        }
-      }
-      return [...clone];
+      delete clone[action.uid];
+      return {...clone};
     default:
       return state;
   }
@@ -102,6 +104,23 @@ const projectEdit = (state = { update: false, create: false }, action) => {
   }
 };*/
 
+const projectDelete = (state = { open: false, project: {} }, action) => {
+  switch (action.type) {
+      case DeleteActions.SHOW_MESSAGE:
+        return {
+          open: action.open,
+          project: action.project
+        };
+      case DeleteActions.HIDE_MESSAGE:
+        return {
+          open: false,
+          project: {}
+        };
+      default:
+        return state;
+  }
+};
+
 const hover = (state = { hover: false }, action) => {
   switch (action.type) {
     case HoverActions.OVER:
@@ -121,7 +140,9 @@ const hover = (state = { hover: false }, action) => {
 const rootReducer = combineReducers({
   projectList,
   /*projectCreate,*/
+  projectDelete,
   projectEdit,
+  message,
   hover
 });
 
