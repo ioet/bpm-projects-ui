@@ -1,7 +1,8 @@
 import {DeleteActions, UserActions, SnackBarMessageActions, HoverActions} from "./action-types";
 import { ProjectsAPI, SnackBarMessageConst } from "./constants";
 import { newProject } from "./components/utils/utils";
-import axios from "./components/utils/axios"
+import axios from "./components/utils/axios";
+import { validateField } from "./components/utils/utils";
 
 const displayProjects = projects => ({
   type: UserActions.GET_PROJECTS,
@@ -18,7 +19,7 @@ const removeProject = uid => ({
   uid
 });
 
-const startEditProject = projectId => ({
+export const startEditProject = projectId => ({
   type: UserActions.EDIT_START,
   uid: projectId
 });
@@ -39,6 +40,11 @@ export const setProjectEditData = (field, value) => ({
   type: UserActions.EDIT_DATA,
   field,
   value
+});
+
+const setUpdateProject = project => ({
+    type: UserActions.UPDATE,
+    project
 });
 
 export const showSnackBarMessage = message => ({
@@ -80,20 +86,14 @@ export const clearEdit = uid => (dispatch, getState) => {
   if (editId === uid) return dispatch(endEditProject());
 };
 
-const setUpdateProject = project => ({
-  type: UserActions.UPDATE,
-  project
-});
 
-export const editProject = project => (dispatch, getState) => {
+
+export const handleDoneButton = project => (dispatch, getState) => {
   const projectEditId = getState().projectEdit.uid;
   if (projectEditId !== undefined) {
-    if (projectEditId === project.uid) {
-      if (projectEditId === newProject().uid) return dispatch(createProject());
-      return dispatch(updateProject(project));
-    }
+    if (projectEditId === newProject().uid) return dispatch(createProject());
+    if (projectEditId === project.uid) return dispatch(updateProject(project));
   }
-  return dispatch(startEditProject(project.uid));
 };
 
 export const getAllProjects = () => dispatch =>
@@ -102,22 +102,32 @@ export const getAllProjects = () => dispatch =>
     .then(response => dispatch(displayProjects(response.data)))
     .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_LOAD_PROJECTS}: ${err}`)));
 
-const createProject = () => (dispatch, getState) => {
+export const createProject = () => (dispatch, getState) => {
   let { short_name, comments, active } = getState().projectEdit;
   if (comments === undefined) comments = "";
   if (active === undefined) active = false;
-  return axios
-    .post(`${ProjectsAPI.PATH}/`, {
-      short_name,
-      comments,
-      active
-    })
-    .then(res => {
-      dispatch(endCreateProject());
-      dispatch(addProject(res.data));
-      dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_CREATED}`));
-    })
-    .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_CREATE_PROJECT}: ${err}`)));
+
+  if(validateField(short_name)) {
+      return axios
+          .post(`${ProjectsAPI.PATH}/`, {
+              short_name,
+              comments,
+              active
+          })
+          .then(res => {
+              dispatch(endCreateProject());
+              dispatch(addProject(res.data));
+              dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_CREATED}`));
+          })
+          .catch(err => {
+              const {message} = err.response.data;
+              message ?
+                  dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_CREATE_PROJECT}: ${message}`)) :
+                  dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_CREATE_PROJECT}: ${err}`));
+          });
+  } else {
+      dispatch(showSnackBarMessage(`${SnackBarMessageConst.INVALID_DATA}`))
+  }
 };
 
 const updateProject = project => (dispatch, getState) => {
@@ -127,18 +137,22 @@ const updateProject = project => (dispatch, getState) => {
   if (comments === undefined) comments = project.comments;
   if (active === undefined) active = project.active;
 
-  return axios
-    .put(`${ProjectsAPI.PATH}/${uid}`, {
-      short_name,
-      comments,
-      active
-    })
-    .then(res => {
-      dispatch(setUpdateProject(res.data));
-      dispatch(endEditProject());
-      dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_UPDATED}: ${short_name}`));
-    })
-    .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_UPDATE_PROJECT}: ${err}`)));
+  if(validateField(short_name)) {
+    return axios
+      .put(`${ProjectsAPI.PATH}/${uid}`, {
+        short_name,
+        comments,
+        active
+      })
+      .then(res => {
+        dispatch(setUpdateProject(res.data));
+        dispatch(endEditProject());
+        dispatch(showSnackBarMessage(`${SnackBarMessageConst.PROJECT_UPDATED}: ${short_name}`));
+      })
+      .catch(err => dispatch(showSnackBarMessage(`${SnackBarMessageConst.FAIL_UPDATE_PROJECT}: ${err}`)));
+  } else {
+      dispatch(showSnackBarMessage(`${SnackBarMessageConst.INVALID_DATA}`))
+  }
 };
 
 export const deleteProject = uid => (dispatch =>

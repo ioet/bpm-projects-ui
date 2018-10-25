@@ -9,9 +9,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     handleClose: (accepted, uid) => {
-        if (accepted)
-            dispatch(deleteProject(uid));
-        dispatch(hideDeleteDialog())
+        if (accepted) dispatch(deleteProject(uid));
+        dispatch(hideDeleteDialog());
     }
 });
 

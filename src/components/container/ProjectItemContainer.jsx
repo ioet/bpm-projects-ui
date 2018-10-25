@@ -1,12 +1,13 @@
 import { connect } from "react-redux";
 import ProjectItem from "../presentational/ProjectItem";
 import {
-  editProject,
-  setProjectEditData,
-  showDeleteDialog,
-  clearEdit,
-  hoverOver,
-  hoverOut
+    startEditProject,
+    handleDoneButton,
+    setProjectEditData,
+    showDeleteDialog,
+    clearEdit,
+    hoverOver,
+    hoverOut
 } from "../../actions";
 
 const mapStateToProps = (state, ownProps) => {
@@ -15,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
       ...ownProps.project,
       active:
         ownProps.project.uid === state.projectEdit.uid &&
-        typeof state.projectEdit.active !== "undefined"
+        state.projectEdit.active !== undefined
           ? state.projectEdit.active
           : ownProps.project.active
     },
@@ -25,8 +26,11 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onEditProject: project => {
-    dispatch(editProject(project));
+  onEditProject: uid => {
+    dispatch(startEditProject(uid));
+  },
+  onDoneAction: project => {
+    dispatch(handleDoneButton(project));
   },
   onChange: ({ target }) => {
     dispatch(setProjectEditData(target.name, target.value));
@@ -34,10 +38,10 @@ const mapDispatchToProps = dispatch => ({
   onToggleActive: checked => {
     dispatch(setProjectEditData("active", checked));
   },
-  onDeleteProject: (project, editId) => {
-      project.uid === editId
-      ? dispatch(clearEdit(project.uid))
-      : dispatch(showDeleteDialog(project));
+  onClearProject: uid => {
+      dispatch(clearEdit(uid))
+  },
+  onDeleteProject: (project) => {dispatch(showDeleteDialog(project));
   },
   onMouseOver: id => {
     dispatch(hoverOver(id));

@@ -4,3 +4,5 @@ export const newProject = () => ({
   comments: "",
   active: false
 });
+
+export const validateField = input => !(input === undefined || input === '');

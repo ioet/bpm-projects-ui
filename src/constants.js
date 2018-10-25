@@ -26,6 +26,7 @@ export const ProjectListConst = {
 };
 
 export const SnackBarMessageConst = {
+  INVALID_DATA: "Please enter a valid project name",
   DISCARDED: "Changes discarded",
   PROJECT_CREATED: "New Project Created",
   PROJECT_UPDATED: "Project updated",
@@ -38,14 +39,19 @@ export const SnackBarMessageConst = {
 
 export const DeleteDialogConst = {
   TITLE: "Delete Project",
-  CONTENT_TEXT_1: "Are you sure you want to delete: ",
-  CONTENT_TEXT_2: ' permanently?',
-  NO: 'No',
-  YES: 'Yes',
+  CONTENT_TEXT_1: "Are you sure you want to delete ",
+  CONTENT_TEXT_2: " permanently?",
+  NO: "No",
+  YES: "Yes",
 };
 
 export const SnackbarHideConst = {
-  AUTO_HIDE_DURATION: 3000
+  AUTO_HIDE_DURATION: 5000
 };
+
+export const ButtonsDelay = {
+  ENTER_DELAY: 400,
+  LEAVE_DELAY: 200
+}
 
 
